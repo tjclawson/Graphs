@@ -110,20 +110,34 @@ class Graph:
         breath-first order.
         """
         # Create a queue
+        q = Queue()
         # Enqueue A PATH TO the starting vertex
+        q.enqueue([starting_vertex])
         # Create a set to store visited vertices
+        visited = set()
         # While the queue is not empty...
+        while q.size() > 0:
             # Dequeue the first PATH
+            path = q.dequeue()
             # GRAB THE VERTEX FROM THE END OF THE PATH
+            v = path[-1]
             # Check if it's been visited
             # If it hasn't been visited...
+            if v not in visited:
+                visited.add(v)
                 # Mark it as visited
                 # CHECK IF IT'S THE TARGET
+                if v == destination_vertex:
                     # IF SO, RETURN THE PATH
+                    return path
                 # Enqueue A PATH TO all it's neighbors
+                for neighbor in self.get_neighbors(v):
                     # MAKE A COPY OF THE PATH
+                    new_path = path.copy()
+                    new_path.append(neighbor)
                     # ENQUEUE THE COPY
-        pass
+                    q.enqueue(new_path)
+
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -131,7 +145,34 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        # Create a stack
+        s = Stack()
+        # Push A PATH TO starting vertex
+        s.push([starting_vertex])
+        # create a set to store visited vertices
+        visited = set()
+        # while the is not empty...
+        while s.size() > 0:
+            # Dequeue the first PATH
+            path = s.pop()
+            # GRAB THE VERTEX FROM THE END OF THE PATH
+            v = path[-1]
+            # Check if it's been visited
+            # If it hasn't been visited...
+            if v not in visited:
+                visited.add(v)
+                # Mark it as visited
+                # CHECK IF IT'S THE TARGET
+                if v == destination_vertex:
+                    # IF SO, RETURN THE PATH
+                    return path
+                # Push A PATH TO all it's neighbors
+                for neighbor in self.get_neighbors(v):
+                    # MAKE A COPY OF THE PATH
+                    new_path = path.copy()
+                    new_path.append(neighbor)
+                    # Push THE COPY
+                    s.push(new_path)
 
     def dfs_recursive(self, starting_vertex):
         """
