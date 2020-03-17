@@ -3,17 +3,16 @@ from collections import deque
 
 def earliest_ancestor(ancestors, starting_node):
 
-    # Convert list of tuples into dict of set for showing parent relationship
+    # Convert list of tuples into graph of parent relationship
     vertices = {}
     for a in ancestors:
-        vertices[a[1]] = set()
-
-    for a in ancestors:
+        if a[1] not in vertices:
+            vertices[a[1]] = set()
         vertices[a[1]].add(a[0])
 
     paths = []
 
-    def helper(child, path=None):
+    def find_all_paths_to_ancestors(child, path=None):
         if path is None:
             path = []
 
@@ -25,9 +24,9 @@ def earliest_ancestor(ancestors, starting_node):
         else:
             for parent in vertices[child]:
                 path_copy = path.copy()
-                helper(parent, path_copy)
+                find_all_paths_to_ancestors(parent, path_copy)
 
-    helper(starting_node)
+    find_all_paths_to_ancestors(starting_node)
     current_max_length = 0
     current_id = 0
 
