@@ -26,21 +26,7 @@ def earliest_ancestor(ancestors, starting_node):
                 find_all_paths_to_ancestors(parent, path_copy)
 
     find_all_paths_to_ancestors(starting_node)
-    current_max_length = 0
-    current_id = 0
-
-    for p in paths:
-        if len(p) > current_max_length:
-            current_max_length = len(p)
-            current_id = p[-1]
-
-        elif len(p) == current_max_length:
-            if p[-1] < current_id:
-                current_id = p[-1]
-
-    if current_id == starting_node:
-        return -1
-    return current_id
+    return find_earliest_id(paths, starting_node)
 
 
 def earliest_ancestor_iterative(ancestors, starting_node):
@@ -68,6 +54,10 @@ def earliest_ancestor_iterative(ancestors, starting_node):
                 new_path.append(parent)
                 s.push(new_path)
 
+    return find_earliest_id(paths, starting_node)
+
+
+def find_earliest_id(paths, starting_node):
     current_max_length = 0
     current_id = 0
 
@@ -77,13 +67,11 @@ def earliest_ancestor_iterative(ancestors, starting_node):
             current_id = p[-1]
 
         elif len(p) == current_max_length:
-            if p[-1] < current_id:
-                current_id = p[-1]
+            current_id = min(current_id, p[-1])
 
     if current_id == starting_node:
         return -1
     return current_id
-
 
 """
 {3: {1, 2}, 6: {3, 5}, 7: {5}, 5: {4}, 8: {11, 4}, 9: {8}, 1: {10}}
