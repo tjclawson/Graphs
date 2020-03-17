@@ -1,5 +1,4 @@
-from collections import deque
-
+from util import Stack
 
 def earliest_ancestor(ancestors, starting_node):
 
@@ -44,10 +43,46 @@ def earliest_ancestor(ancestors, starting_node):
     return current_id
 
 
+def earliest_ancestor_iterative(ancestors, starting_node):
+    s = Stack()
 
+    vertices = {}
+    for a in ancestors:
+        if a[1] not in vertices:
+            vertices[a[1]] = set()
+        vertices[a[1]].add(a[0])
 
-test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
-earliest_ancestor(test_ancestors, 2)
+    paths = []
+
+    s.push([starting_node])
+
+    while s.size() > 0:
+        path = s.pop()
+        child = path[-1]
+
+        if child not in vertices:
+            paths.append(path)
+        else:
+            for parent in vertices[child]:
+                new_path = path.copy()
+                new_path.append(parent)
+                s.push(new_path)
+
+    current_max_length = 0
+    current_id = 0
+
+    for p in paths:
+        if len(p) > current_max_length:
+            current_max_length = len(p)
+            current_id = p[-1]
+
+        elif len(p) == current_max_length:
+            if p[-1] < current_id:
+                current_id = p[-1]
+
+    if current_id == starting_node:
+        return -1
+    return current_id
 
 
 """
